@@ -1,0 +1,18 @@
+name: 'DingDing Notify Action'
+description: '通过钉钉机器人 Webhook 发送通知'
+inputs:
+  dingToken:
+    description: '钉钉机器人 access_token'
+    required: true
+  secret:
+    description: '钉钉机器人加签密钥（安全设置中的"加签"密钥）'
+    required: false
+  body:
+    description: '请求体 JSON 字符串，直接透传给钉钉 API'
+    required: true
+outputs:
+  result:
+    description: '钉钉 API 返回结果'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
