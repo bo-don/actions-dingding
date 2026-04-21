@@ -19,7 +19,7 @@ function sign(secret) {
 
     // URL 编码（必须！）
     const encodedSign = encodeURIComponent(sign);
-    return {timestamp, sign};
+    return {timestamp, encodedSign};
 }
 
 /**
