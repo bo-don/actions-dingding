@@ -63,6 +63,10 @@ async function run() {
     const secret = core.getInput('secret');
     const bodyStr = core.getInput('body', { required: true });
 
+    core.debug(`dingToken: ${dingToken.substring(0, 8)}...`);
+    core.debug(`secret: ${secret ? secret.substring(0, 4) + '...' : '(empty)'}`);
+    core.debug(`body: ${bodyStr}`);
+
     // 2. 通过 dingToken 拼接 Webhook URL
     let url = `https://oapi.dingtalk.com/robot/send?access_token=${dingToken}`;
 
@@ -70,7 +74,10 @@ async function run() {
     if (secret) {
       const { timestamp, sign: signStr } = sign(secret);
       url += `&timestamp=${timestamp}&sign=${signStr}`;
+      core.debug(`sign url params: timestamp=${timestamp}, sign=${signStr}`);
     }
+
+    core.debug(`request url: ${url.replace(dingToken, dingToken.substring(0, 8) + '...')}`);
 
     // 4. 解析 body
     const body = JSON.parse(bodyStr);
@@ -79,6 +86,8 @@ async function run() {
 
     // 5. 发送请求
     const result = await post(url, body);
+
+    core.debug(`response: ${JSON.stringify(result)}`);
 
     // 6. 检查结果
     if (result.errcode !== 0) {
